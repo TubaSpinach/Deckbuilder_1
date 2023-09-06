@@ -1,0 +1,14 @@
+{ "cards": [
+        {
+            "title":"strike"
+            "image_src":"strike.png"
+            "effects": [ {"name" : "energyEvent", "amount" : 1}, {"name": "healthEvent", "amount" : 5 } ]
+        }
+        {
+            "title":"bash"
+            "image_src":"bash.png"
+            "effects": [ {"name" : "energyEvent", "amount" : 2}, {"name": "healthEvent", "amount" : 12 } ]
+        }
+    ]
+    
+}
