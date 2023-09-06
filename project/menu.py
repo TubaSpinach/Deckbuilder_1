@@ -37,10 +37,12 @@ class Button(pygame.sprite.Sprite):
         self.action = pygame.event.Event('ButtonActivated', {'action': action})
     
     #activate on mouseclick!
-    def update(self, mouseClick):
-        if(self.rect.collidepoint(mouseClick)):
-            self.action.post()
-            return True
+    def update(self, event):
+        if event.event_name() == 'MOUSEBUTTONDOWN':
+            mouseClick = pygame.mouse.get_pos
+            if(self.rect.collidepoint(mouseClick)):
+                self.action.post()
+                return True
         return False
     
 

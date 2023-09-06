@@ -14,3 +14,16 @@ def test_menu():
     tMenu.add(tButton1)
     assert len(tMenu.sprites) > 0 
     assert isinstance(tMenu.draw(),list)
+
+def test_button():
+    #testing __init__
+    assert isinstance(tButton1.image,pygame.surface.Surface)
+    assert isinstance(tButton1.image_down,pygame.surface.Surface)
+    assert isinstance(tButton1.rect,pygame.Rect)
+    assert isinstance(tButton1.action,pygame.event.Event)
+
+    testClick = tButton1.rect.center
+    testEvent = pygame.event.Event('MOUSEBUTTONDOWN',{'pos':(testClick), 'button': 1})
+    #testing being pressed
+    tButton1.update(testEvent)
+    assert tButton1.action in pygame.event.get()
