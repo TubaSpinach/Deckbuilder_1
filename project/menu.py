@@ -1,6 +1,6 @@
 #TODO
 #
-#
+#modify Menu.add() to position buttons in equal parts of the menu surface
 #clean up
 
 

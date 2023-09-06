@@ -4,7 +4,8 @@
 #add a win / loss screen or menu
 #test json uses in conf_dict and card_dict
 #add unit tests for play.py, menu.py
-#images: background.png, button.png, battle_background.png, player.png, enemy.png, strike.png, bash.png
+#images: background.png, button.png, battle_background.png, player.png, enemy.png, strike.png, bash.png, test_button.png,
+#           test_background.png, test_button_down.png
 #alts: button_pressed.png
 
 try:
