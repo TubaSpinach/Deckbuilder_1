@@ -1596,3 +1596,13 @@ lib/python3.10/site-packages/tomli-2.0.1.dist-info/LICENSE
 lib/python3.10/site-packages/tomli-2.0.1.dist-info/METADATA
 lib/python3.10/site-packages/tomli-2.0.1.dist-info/RECORD
 lib/python3.10/site-packages/tomli-2.0.1.dist-info/WHEEL
+tests/__pycache__/test_json.cpython-310-pytest-7.4.0.pyc
+tests/__pycache__/test_menu.cpython-310-pytest-7.4.0.pyc
+project/__pycache__/__init__.cpython-310.pyc
+project/__pycache__/main.cpython-310.pyc
+project/__pycache__/menu.cpython-310.pyc
+project/__pycache__/main.cpython-310.pyc
+project/__pycache__/menu.cpython-310.pyc
+project/tests/__pycache__/test_json.cpython-310-pytest-7.4.0.pyc
+project/tests/__pycache__/test_menu.cpython-310-pytest-7.4.0.pyc
+project/tests/__pycache__/__init__.cpython-310.pyc
