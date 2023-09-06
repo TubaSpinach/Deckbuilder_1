@@ -9,7 +9,7 @@
 
 try:
     import sys, os, pygame, json
-    import menu.py, play.py
+    import menu, play
 except ImportError:
     print(f"Couldn't load all modules.")
     sys.exit(2)
@@ -45,7 +45,7 @@ BattleScreen = play.BattleView(load_png("battle_background.png"))
 Player = play.Character('Player',"player.png",50,3,BattleScreen)
 Enemy = play.Character('Enemy','enemy.png',50,3,BattleScreen)
 
-with open(os.path.join('res',card_json)) as f:
+with open(os.path.join('res','card_lib.txt')) as f:
     card_dict = json.load(f)
 
 deck_list = []
