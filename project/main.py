@@ -4,9 +4,8 @@
 #add a win / loss screen or menu
 #test json uses in conf_dict and card_dict
 #add unit tests for play.py, menu.py
-#images: background.png, button.png, battle_background.png, player.png, enemy.png, strike.png, bash.png, test_button.png,
-#           test_background.png, test_button_down.png
-#alts: button_pressed.png
+#images: player.png, enemy.png, strike.png, bash.png
+
 
 try:
     import sys, os, pygame, json
@@ -17,13 +16,19 @@ except ImportError as err:
     sys.exit(2)
 
 settings = os.path.join('project','res','settings.txt')
+card_lib = os.path.join('project','res', 'card_lib.txt')
 conf_dict = {}
 card_dict = {}
-try:
-    with open(settings) as f:
-        conf_dict = json.load(f)
-except FileNotFoundError as err:
-    print(f"Couldn't load file {err}")
+
+def load_json(file,target_dict):
+    try: 
+        with open(file) as f:
+            target_dict = json.load(f)
+    except FileNotFoundError as err:
+        print(f"Couldn't load file {err}")
+
+load_json(settings,conf_dict)
+load_json(card_lib,card_dict)
 
 def load_png(name):
     """ Load image and return image object"""
@@ -39,7 +44,13 @@ def load_png(name):
         raise SystemExit
     return image, image.get_rect()
 
+# pygame setup
+pygame.init()
+screen = pygame.display.set_mode((conf_dict['WIDTH'], conf_dict['HEIGTH']))
+clock = pygame.time.Clock()
+running = True
 
+#has to come after display initialization
 GameMenu = menu.Menu(load_png("background.png"))
 newGameButton = menu.Button('newGame','New Game',load_png("button.png"),load_png("button_down.png"))
 GameMenu.add(newGameButton)
@@ -50,8 +61,6 @@ BattleScreen = play.BattleView(load_png("battle_background.png"))
 Player = play.Character('Player',"player.png",50,3,BattleScreen)
 Enemy = play.Character('Enemy','enemy.png',50,3,BattleScreen)
 
-with open(os.path.join('res','card_lib.txt')) as f:
-    card_dict = json.load(f)
 
 deck_list = []
 #will also be instantiated elsewhere later on
@@ -63,11 +72,6 @@ for i in range(0,4):
 Deck = play.Deck(deck_list)
 
 VIEWS = [GameMenu,BattleScreen]
-# pygame setup
-pygame.init()
-screen = pygame.display.set_mode((conf_dict['WIDTH'], conf_dict['HEIGTH']))
-clock = pygame.time.Clock()
-running = True
 currentView = VIEWS[0]
 
 while running:

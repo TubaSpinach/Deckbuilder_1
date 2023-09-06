@@ -2,8 +2,8 @@ import pygame, os
 from .. import menu
 from ..main import load_png
 
-tMenu = menu.Menu(load_png('test_background.png'))
-tButton1 = menu.Button('test_Press',"Test Button",load_png('test_button.png'),load_png('test_button_down.png'))
+tMenu = menu.Menu(load_png('background.png'))
+tButton1 = menu.Button('test_Press',"Test Button",load_png('button.png'),load_png('button_down.png'))
 resFolder = os.path.join('project','res')
 
 def test_menu():
