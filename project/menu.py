@@ -5,7 +5,6 @@
 
 
 import pygame
-from pygame.sprite import _Group
 
 #a class to hold buttons and take names 8)
 class Menu(pygame.sprite.RenderUpdates):
@@ -18,7 +17,7 @@ class Menu(pygame.sprite.RenderUpdates):
     def draw(self, aSurface):
         #draw self first; children go on top
         self.image.blit(aSurface)
-        super(Menu, self).draw(aSurface)
+        return super(Menu, self).draw(aSurface)
         
     #don't need to define an update method, already in sprite.RenderUpdates
 

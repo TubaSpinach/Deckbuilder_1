@@ -9,20 +9,24 @@
 
 try:
     import sys, os, pygame, json
-    import menu, play
-except ImportError:
-    print(f"Couldn't load all modules.")
+    import project.menu as menu
+    import project.play as play
+except ImportError as err:
+    print(f"Couldn't load all modules: {err}.")
     sys.exit(2)
 
-settings = 'res/settings.txt'
+settings = os.path.join('project','res','settings.txt')
 conf_dict = {}
 card_dict = {}
-with open(settings) as f:
-    conf_dict = json.load(f)
+try:
+    with open(settings) as f:
+        conf_dict = json.load(f)
+except FileNotFoundError as err:
+    print(f"Couldn't load file {err}")
 
 def load_png(name):
     """ Load image and return image object"""
-    fullname = os.path.join("res", name)
+    fullname = os.path.join('project',"res", name)
     try:
         image = pygame.image.load(fullname)
         if image.get_alpha() is None:
