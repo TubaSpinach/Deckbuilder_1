@@ -32,7 +32,7 @@ def test_menu():
     #testing add() and draw() member functions work properly
     tMenu.add(tButton1)
     assert len(tMenu) > 0 
-    assert isinstance(tMenu.draw(),list)
+    assert isinstance(tMenu.draw(screen),list)
 
 def test_button():
     #testing __init__

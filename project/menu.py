@@ -16,7 +16,7 @@ class Menu(pygame.sprite.RenderUpdates):
     
     def draw(self, aSurface):
         #draw self first; children go on top
-        self.image.blit(aSurface)
+        aSurface.blit(self.image,self.rect)
         return super(Menu, self).draw(aSurface)
         
     #don't need to define an update method, already in sprite.RenderUpdates
