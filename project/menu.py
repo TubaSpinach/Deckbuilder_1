@@ -26,15 +26,15 @@ class Button(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         #we'll use the load_png function to load the images
         self.image, self.rect = loaded_image_up
-        self.image_down, = loaded_image_down
+        self.image_down, self.image_down_rect = loaded_image_down
 
         #set up the button text
         self.font = pygame.font.Font(None, 36)
-        self.text = self.font.render(text,1)
-        #center it in the button
-        self.text.center = self.rect.center
+        self.text = self.font.render(text,1,(1,1,1))
+        #center it in the button; this doesn't work, and I need to figure out what to do with that
+        #self.text.center = self.rect.center
         #the event placed on cue when pressed!
-        self.action = pygame.event.Event('ButtonActivated', {'action': action})
+        self.action = pygame.event.Event(pygame.USEREVENT, {'action': action})
     
     #activate on mouseclick!
     def update(self, event):

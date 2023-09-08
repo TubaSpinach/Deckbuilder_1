@@ -175,7 +175,7 @@ class Character(pygame.sprite.Sprite):
         self.energy = energy
     
     def update(self,event):
-        match event.event_name():
+        match event['name']:
             case 'healthEvent':
                 self.health += event['amount']
             case 'energyEvent':
@@ -200,7 +200,7 @@ class Card(pygame.sprite.Sprite):
             else:
                 pass
         elif event.event_name() == "MOUSEBUTTONUP" and event.button == "button1":
-            self.dropEvent = pygame.event.Event("dropEvent", {'pos':self.rect, 'effects':cls.effects})
+            self.dropEvent = pygame.event.Event(pygame.USEREVENT + 1, {'name': 'dropEvent', 'pos' : self.rect, 'effects':cls.effects})
             self.dropEvent.post()
         else:
             pass

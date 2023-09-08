@@ -1,6 +1,24 @@
 import pygame, os
 from .. import menu
-from ..main import load_png
+
+def load_png(name):
+    """ Load image and return image object"""
+    fullname = os.path.join('project',"res", name)
+    try:
+        image = pygame.image.load(fullname)
+        if image.get_alpha() is None:
+            image = image.convert()
+        else:
+            image = image.convert_alpha()
+    except FileNotFoundError:
+        print(f"Cannot load image: {fullname}")
+        raise SystemExit
+    return image, image.get_rect()
+
+
+pygame.init()
+screen = pygame.display.set_mode((1280, 720))
+
 
 tMenu = menu.Menu(load_png('background.png'))
 tButton1 = menu.Button('test_Press',"Test Button",load_png('button.png'),load_png('button_down.png'))
