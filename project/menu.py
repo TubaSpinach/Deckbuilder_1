@@ -41,7 +41,7 @@ class Button(pygame.sprite.Sprite):
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouseClick = event.pos
             if(self.rect.collidepoint(mouseClick)):
-                self.action.post()
+                pygame.event.post(self.action)
                 return True
         return False
     

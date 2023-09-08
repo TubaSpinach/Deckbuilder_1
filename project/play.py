@@ -42,7 +42,7 @@ class BattleView(pygame.sprite.RenderUpdates):
             case "dropEvent":
                 if self.rect.colliderect(event.pos):
                     for effect in event.effects:
-                        pygame.event.Event(pygame.USEREVENT, { 'name' : effect.name, 'amount' : effect.amount} ).post()
+                        pygame.event.post(pygame.event.Event(pygame.USEREVENT, { 'name' : effect.name, 'amount' : effect.amount} ))
             case _:
                 super(BattleView,self).update(event)
 
@@ -202,7 +202,7 @@ class Card(pygame.sprite.Sprite):
         elif event.type == pygame.MOUSEBUTTONUP:
             if event.button == "button1":
                 self.dropEvent = pygame.event.Event(pygame.USEREVENT + 1, {'name': 'dropEvent', 'pos' : self.rect, 'effects':cls.effects})
-                self.dropEvent.post()
+                pygame.event.post(self.dropEvent)
         else:
             pass
 
