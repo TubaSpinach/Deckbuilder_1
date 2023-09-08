@@ -38,13 +38,13 @@ class BattleView(pygame.sprite.RenderUpdates):
                 sprite.rect = self.enemy_slot
 
     def handle(self, event):
-        match event.event_name:
+        match event.name:
             case "dropEvent":
-                if self.rect.colliderect(event['pos']):
-                    for effect in event['effects']:
-                        pygame.event.Event(effect['name'],effect['amount']).post()
+                if self.rect.colliderect(event.pos):
+                    for effect in event.effects:
+                        pygame.event.Event(pygame.USEREVENT, { 'name' : effect.name, 'amount' : effect.amount} ).post()
             case _:
-                pass
+                super(BattleView,self).update(event)
 
 #draw pile starts at 0 cuz why pop
 #                   might need to optimize later
@@ -94,16 +94,16 @@ class Hand(pygame.sprite.RenderUpdates):
             super(Hand,self).add(sprites)
 
     def update(self, event):
-        match event.event_name():
+        match event.name:
             case 'turnStart':
                 self.m_deck.pullCards(self.start_size)
-            case 'MOUSEBUTTONDOWN':
-                super(Hand,self).update(event)
             case 'turnEnd':
                 self.m_deck.addToDiscardPile(self.sprites)
                 self.empty()
             case 'pullCard':
                 self.m_deck.pullCards(event['amount'])
+            case _:
+                super(Hand,self).update(event)
         
     def getRect(self):
         return self.rect
@@ -175,11 +175,11 @@ class Character(pygame.sprite.Sprite):
         self.energy = energy
     
     def update(self,event):
-        match event['name']:
+        match event.name:
             case 'healthEvent':
-                self.health += event['amount']
+                self.health += event.amount
             case 'energyEvent':
-                self.energy += event['amount']
+                self.energy += event.amount
             case _:
                 pass
 
@@ -194,14 +194,15 @@ class Card(pygame.sprite.Sprite):
         self.dropEvent = None
 
     def update(self, cls, event):
-        if event.event_name() == "MOUSEBUTTONDOWN" and event.button == "button1":
-            if self.rect.collidepoint(event.pos):
-                self.rect = pygame.mouse.get_pos
-            else:
-                pass
-        elif event.event_name() == "MOUSEBUTTONUP" and event.button == "button1":
-            self.dropEvent = pygame.event.Event(pygame.USEREVENT + 1, {'name': 'dropEvent', 'pos' : self.rect, 'effects':cls.effects})
-            self.dropEvent.post()
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == "button1":
+                if self.rect.collidepoint(event.pos):
+                    self.rect = event.pos
+
+        elif event.type == pygame.MOUSEBUTTONUP:
+            if event.button == "button1":
+                self.dropEvent = pygame.event.Event(pygame.USEREVENT + 1, {'name': 'dropEvent', 'pos' : self.rect, 'effects':cls.effects})
+                self.dropEvent.post()
         else:
             pass
 

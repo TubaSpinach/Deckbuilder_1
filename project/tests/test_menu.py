@@ -21,7 +21,7 @@ screen = pygame.display.set_mode((1280, 720))
 
 
 tMenu = menu.Menu(load_png('background.png'))
-tButton1 = menu.Button('test_Press',"Test Button",load_png('button.png'),load_png('button_down.png'))
+tButton1 = menu.Button(pygame.USEREVENT,"Test Button",load_png('button.png'),load_png('button_down.png'))
 resFolder = os.path.join('project','res')
 
 def test_menu():
@@ -31,7 +31,7 @@ def test_menu():
 
     #testing add() and draw() member functions work properly
     tMenu.add(tButton1)
-    assert len(tMenu.sprites) > 0 
+    assert len(tMenu) > 0 
     assert isinstance(tMenu.draw(),list)
 
 def test_button():
@@ -42,7 +42,7 @@ def test_button():
     assert isinstance(tButton1.action,pygame.event.Event)
 
     testClick = tButton1.rect.center
-    testEvent = pygame.event.Event('MOUSEBUTTONDOWN',{'pos':(testClick), 'button': 1})
+    testEvent = pygame.event.Event(pygame.MOUSEBUTTONDOWN,{'pos':(testClick), 'button': 1})
     #testing being pressed
     tButton1.update(testEvent)
     assert tButton1.action in pygame.event.get()
