@@ -71,7 +71,10 @@ for i in range(0,4):
 Player = play.Character('Player',load_png("player.png"),50,3,deck_list)
 Enemy = play.Character('Enemy', load_png('enemy.png'),50,3,deck_list)
 
-BattleScreen = play.BattleView(load_png("battle_background.png"),[Player,Enemy])
+BattleScreen = play.BattleView(load_png("battle_background.png"))
+BattleScreen.add(Player)
+BattleScreen.add(Enemy)
+BattleScreen.arrange()
 
 VIEWS = [GameMenu,BattleScreen]
 currentView = VIEWS[0]

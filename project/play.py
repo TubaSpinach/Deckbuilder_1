@@ -5,6 +5,7 @@
 
 #Player and Enemy have a Deck each, BattleView has a Hand has Player's Deck
 
+
 import pygame, json, os
 
 import numpy as np
@@ -12,20 +13,22 @@ import numpy as np
 #needs a character name "Player"
 class BattleView(pygame.sprite.RenderUpdates):
     def __init__(self, background_image, *sprites):
-        #this lets us call init on the superclass
-        super().__init__(sprites)
+        pygame.sprite.RenderUpdates.__init__(self)
         self.image, self.rect = background_image
         self.player_slot = self.rect.midleft
         self.enemy_slot = self.rect.midright
         self.card_slots = self.rect.bottomleft
+        self.cards = None
         
-        for sprite in self.sprites:
+        
+    #call after adding sprites    
+    def arrange(self):
+        for sprite in self:
             if sprite.name == "Player":
                 sprite.rect = self.player_slot
                 self.cards = Hand(self.card_slots, sprite.deck)
             else: 
                 sprite.rect = self.enemy_slot
-        
 
     def setBackground(self, loaded_image):
         self.image, self.rect = loaded_image
@@ -44,19 +47,21 @@ class BattleView(pygame.sprite.RenderUpdates):
 #                   might need to optimize later
 class Deck(pygame.sprite.Group):
     def __init__(self, *sprites):
-        super().__init__(sprites)
+        pygame.sprite.Group.__init__(self)
         self.discard_pile = pygame.sprite.Group()
-        self.draw_pile = pygame.sprite.Group(sprites)
+        self.draw_pile = pygame.sprite.Group()
+        for sprite in sprites:
+            self.draw_pile.add(sprite)
         self.rng = np.random.default_rng()
         self.shuffle()
 
     def pullCards(self, amount):
-        cards_pulled = self.draw_pile.sprites[:amount]
+        cards_pulled = self.draw_pile.sprites()[:amount]
         self.draw_pile.remove(cards_pulled)
         return cards_pulled
     
     def shuffle(self):
-        self.rng.shuffle(self.draw_pile)
+        self.rng.shuffle(self.draw_pile.sprites())
         return self.draw_pile
     
     def addToDiscardPile(self, *sprites):
@@ -71,7 +76,7 @@ class Deck(pygame.sprite.Group):
 #need to post a turnEnd event in the loop
 class Hand(pygame.sprite.RenderUpdates):
     def __init__(self, rect, aDeck, *sprites):
-        super().__init__(sprites)
+        pygame.sprite.RenderUpdates.__init__(self)
         self.rect = rect
         
 
@@ -161,8 +166,8 @@ class Hand(pygame.sprite.RenderUpdates):
         return self.m_deck
     
 class Character(pygame.sprite.Sprite):
-    def __init__(self, name, loaded_image, health, energy, aDeck, *groups):
-        super().__init__(groups)
+    def __init__(self, name, loaded_image, health, energy, aDeck):
+        pygame.sprite.Sprite.__init__(self)
         self.image, self.rect = loaded_image
         self.name = name
         self.health = health
@@ -184,8 +189,8 @@ class Card(pygame.sprite.Sprite):
     effects = None
     title = ''
     image_src = ''
-    def __init__(self, *groups):
-        super().__init__(groups)
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
         self.dropEvent = None
 
     def update(self, cls, event):
@@ -206,5 +211,5 @@ def CardFactory(card):
         effects = card['effects']
         title = card['title']
         image_src = card['image_src']
-    return SubCard
+    return SubCard()
         

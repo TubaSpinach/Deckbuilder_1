@@ -3785,3 +3785,9 @@ project/__pycache__/menu.cpython-310.pyc
 project/__pycache__/play.cpython-310.pyc
 project/__pycache__/res_func.cpython-310.pyc
 project/res_func.py
+lib/python3.10/site-packages/numpy/__pycache__/conftest.cpython-310-pytest-7.4.0.pyc
+lib/python3.10/site-packages/numpy/__pycache__/conftest.cpython-310-pytest-7.4.1.pyc
+project/tests/__pycache__/test_play.cpython-310-pytest-7.4.0.pyc
+project/tests/__pycache__/test_play.cpython-310.pyc
+project/__pycache__/play.cpython-310.pyc
+project/__pycache__/menu.cpython-310.pyc
