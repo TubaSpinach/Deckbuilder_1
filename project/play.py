@@ -39,9 +39,8 @@ class BattleView(pygame.sprite.RenderUpdates):
             case "dropEvent":
                 if self.rect.colliderect(event.pos):
                     for effect in event.effects:
-                        pygame.event.post(pygame.event.Event(pygame.USEREVENT, { 'name' : effect.name, 'amount' : effect.amount} ))
-            case _:
-                super(BattleView,self).update(event)
+                        self.update((pygame.event.Event(pygame.USEREVENT, effect)))
+                self.update(event)
 
 #draw pile starts at 0 cuz why pop
 #                   might need to optimize later
@@ -187,6 +186,10 @@ class Character(pygame.sprite.Sprite):
 
     def getDeck(self):
         return self.deck
+    
+    def setEnergy(self, new):
+        self.energy = new
+        return self.energy
 
 #effect_list = [{'name':[healthEvent,energyEvent], 'amount':int},{'name': , 'amount': }...]
 #           should always include an 'energyEvent'

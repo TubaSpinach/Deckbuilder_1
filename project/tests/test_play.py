@@ -45,7 +45,9 @@ tBView.add(tEnemy)
 tBView.arrange()
 
 tEvents = [pygame.event.Event(pygame.USEREVENT,{'name':'healthEvent','amount': -5 }),
-           pygame.event.Event(pygame.USEREVENT,{'name':'energyEvent','amount': -1 })]
+           pygame.event.Event(pygame.USEREVENT,{'name':'energyEvent','amount': -1 }),
+           pygame.event.Event(pygame.USEREVENT,{'name':'dropEvent','pos':tBView.rect,
+                                                'effects':[{'name':'energyEvent','amount':1}]})]
 
 tCard = play.CardFactory(card_dict['strike'])
 
@@ -76,4 +78,12 @@ def test_characters():
     pygame.event.post(tEvents[1])
     tPlayer.update(pygame.event.poll())
     assert tPlayer.energy == 2
+
+def test_bview():
+    tPlayer.setEnergy(3)
+    assert tPlayer.rect == tBView.player_slot
+    assert tEnemy.rect == tBView.enemy_slot
+    pygame.event.post(tEvents[2])
+    tBView.handle(pygame.event.poll())
+    assert tPlayer.energy == 4
 
