@@ -5,12 +5,13 @@
 #test json uses in conf_dict and card_dict
 #add unit tests for play.py, menu.py
 #images: player.png, enemy.png, strike.png, bash.png
+#right now, Enemy.image should be changed for each enemy. Keep?
 
 
 try:
     import sys, os, pygame, json
-    import project.menu as menu
-    import project.play as play
+    import menu
+    import play
 except ImportError as err:
     print(f"Couldn't load all modules: {err}.")
     sys.exit(2)
@@ -20,15 +21,17 @@ card_lib = os.path.join('project','res', 'card_lib.txt')
 conf_dict = {}
 card_dict = {}
 
-def load_json(file,target_dict):
+def load_json(file):
     try: 
         with open(file) as f:
             target_dict = json.load(f)
+        return target_dict
     except FileNotFoundError as err:
         print(f"Couldn't load file {err}")
+        return {}
 
-load_json(settings,conf_dict)
-load_json(card_lib,card_dict)
+conf_dict = load_json(settings)
+card_dict = load_json(card_lib)
 
 def load_png(name):
     """ Load image and return image object"""
@@ -55,12 +58,13 @@ GameMenu = menu.Menu(load_png("background.png"))
 newGameButton = menu.Button('newGame','New Game',load_png("button.png"),load_png("button_down.png"))
 GameMenu.add(newGameButton)
 
-BattleScreen = play.BattleView(load_png("battle_background.png"))
+
 
 #probably will be instantiated elsewhere later on
-Player = play.Character('Player',"player.png",50,3,BattleScreen)
-Enemy = play.Character('Enemy','enemy.png',50,3,BattleScreen)
+Player = play.Character('Player',load_png("player.png"),50,3)
+Enemy = play.Character('Enemy', load_png('enemy.png'),50,3)
 
+BattleScreen = play.BattleView(load_png("battle_background.png"),[Player,Enemy])
 
 deck_list = []
 #will also be instantiated elsewhere later on
@@ -80,9 +84,9 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        elif event.type == "newGame":
+        elif event.name == 'newGame':
             currentView = VIEWS[1]
-        elif event.type == "loss":
+        elif event.name == "loss":
             currentView = VIEWS[0]
         #elif event.type == "win":
         #    currentView = VIEWS[2]

@@ -19,23 +19,16 @@ class BattleView(pygame.sprite.RenderUpdates):
         self.enemy_slot = self.rect.midright
         self.card_slots = self.rect.bottomleft
         self.cards = Hand(self.card_slots)
-        
-
-    def setBackground(self, loaded_image):
-        self.image, self.rect = loaded_image
-        return True
-    
-    def add(self, *sprites):
-        if len(self.sprites) > 2:
-            print("Can't add more characters")
-            return False
-        else:
-            super(BattleView,self).add(sprites)
         for sprite in self.sprites:
             if sprite.name == "Player":
                 sprite.rect = self.player_slot
             else: 
                 sprite.rect = self.enemy_slot
+        
+
+    def setBackground(self, loaded_image):
+        self.image, self.rect = loaded_image
+        return True
 
     def handle(self, event):
         match event.name:
