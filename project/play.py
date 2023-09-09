@@ -18,10 +18,11 @@ class BattleView(pygame.sprite.RenderUpdates):
         self.player_slot = self.rect.midleft
         self.enemy_slot = self.rect.midright
         self.card_slots = self.rect.bottomleft
-        self.cards = Hand(self.card_slots)
+        
         for sprite in self.sprites:
             if sprite.name == "Player":
                 sprite.rect = self.player_slot
+                self.cards = Hand(self.card_slots, sprite.deck)
             else: 
                 sprite.rect = self.enemy_slot
         
@@ -160,12 +161,13 @@ class Hand(pygame.sprite.RenderUpdates):
         return self.m_deck
     
 class Character(pygame.sprite.Sprite):
-    def __init__(self, name, loaded_image, health, energy, *groups):
+    def __init__(self, name, loaded_image, health, energy, aDeck, *groups):
         super().__init__(groups)
         self.image, self.rect = loaded_image
         self.name = name
         self.health = health
         self.energy = energy
+        self.deck = Deck(aDeck)
     
     def update(self,event):
         match event.name:

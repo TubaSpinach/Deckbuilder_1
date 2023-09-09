@@ -58,14 +58,6 @@ GameMenu = menu.Menu(load_png("background.png"))
 newGameButton = menu.Button('newGame','New Game',load_png("button.png"),load_png("button_down.png"))
 GameMenu.add(newGameButton)
 
-
-
-#probably will be instantiated elsewhere later on
-Player = play.Character('Player',load_png("player.png"),50,3)
-Enemy = play.Character('Enemy', load_png('enemy.png'),50,3)
-
-BattleScreen = play.BattleView(load_png("battle_background.png"),[Player,Enemy])
-
 deck_list = []
 #will also be instantiated elsewhere later on
 for i in range(0,6):
@@ -73,7 +65,13 @@ for i in range(0,6):
 
 for i in range(0,4):
     deck_list.append(play.CardFactory(card_dict['bash']))
-Deck = play.Deck(deck_list)
+
+
+#probably will be instantiated elsewhere later on
+Player = play.Character('Player',load_png("player.png"),50,3,deck_list)
+Enemy = play.Character('Enemy', load_png('enemy.png'),50,3,deck_list)
+
+BattleScreen = play.BattleView(load_png("battle_background.png"),[Player,Enemy])
 
 VIEWS = [GameMenu,BattleScreen]
 currentView = VIEWS[0]
