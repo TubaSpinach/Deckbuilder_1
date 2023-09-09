@@ -34,8 +34,8 @@ for i in range(0,10):
 
 tDeck = play.Deck(deck_list)
 
-tPlayer = play.Character("Player","player.png",10,3,tDeck)
-tEnemy = play.Character("Enemy","enemy.png",10,3,tDeck)
+tPlayer = play.Character("Player",load_png("player.png"),10,3,tDeck)
+tEnemy = play.Character("Enemy",load_png("enemy.png"),10,3,tDeck)
 tBView = play.BattleView(load_png("background.png"))
 tBView.add(tPlayer)
 tBView.add(tEnemy)
@@ -47,5 +47,5 @@ def test_card_factory():
     tCard = play.CardFactory(card_dict['strike'])
     assert isinstance(tCard,play.Card)
     assert tCard.title == card_dict['strike']['title']
-    assert tCard.effect == card_dict['strike']['effect']
+    assert tCard.effects == card_dict['strike']['effects']
     assert tCard.image_src == card_dict['strike']['image_src']

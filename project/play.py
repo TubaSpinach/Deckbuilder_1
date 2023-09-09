@@ -26,7 +26,7 @@ class BattleView(pygame.sprite.RenderUpdates):
         for sprite in self:
             if sprite.name == "Player":
                 sprite.rect = self.player_slot
-                self.cards = Hand(self.card_slots, sprite.deck)
+                self.cards = Hand(self.card_slots, sprite)
             else: 
                 sprite.rect = self.enemy_slot
 
@@ -75,32 +75,28 @@ class Deck(pygame.sprite.Group):
 #need to post a turnStart event in the loop
 #need to post a turnEnd event in the loop
 class Hand(pygame.sprite.RenderUpdates):
-    def __init__(self, rect, aDeck, *sprites):
-        pygame.sprite.RenderUpdates.__init__(self)
+    def __init__(self, rect, aCharacter, *sprites):
         self.rect = rect
+        self.mCharacter = aCharacter
+        pygame.sprite.RenderUpdates.__init__(self)
         
 
-        #should these be player character attributes instead?
-        self.m_deck = aDeck
-        self.hand_size = 10
-        self.start_size = 5
-        
     def add(self, *sprites):
-        if len(self.sprites) > self.hand_size:
+        if len(self.sprites()) > self.mCharacter.hand_size:
             print("Can't add more cards")
             return False
         else:
-            super(Hand,self).add(sprites)
+            pygame.sprite.RenderUpdates.add(sprites)
 
     def update(self, event):
         match event.name:
             case 'turnStart':
-                self.m_deck.pullCards(self.start_size)
+                self.mCharacter.deck.pullCards(self.start_size)
             case 'turnEnd':
-                self.m_deck.addToDiscardPile(self.sprites)
+                self.mCharacter.deck.addToDiscardPile(self.sprites)
                 self.empty()
             case 'pullCard':
-                self.m_deck.pullCards(event['amount'])
+                self.mCharacter.deck.pullCards(event['amount'])
             case _:
                 super(Hand,self).update(event)
         
@@ -144,6 +140,27 @@ class Hand(pygame.sprite.RenderUpdates):
                 print(f"Unsupported operation {dim}")
                 return False
     
+class Character(pygame.sprite.Sprite):
+    def __init__(self, name, loaded_image, health, energy, aDeck):
+        pygame.sprite.Sprite.__init__(self)
+        self.image, self.rect = loaded_image
+        self.name = name
+        self.health = health
+        self.energy = energy
+        self.deck = aDeck
+        
+        self.hand_size = 10
+        self.start_size = 5
+    
+    def update(self,event):
+        match event.name:
+            case 'healthEvent':
+                self.health += event.amount
+            case 'energyEvent':
+                self.energy += event.amount
+            case _:
+                pass
+
     def getHandSize(self):
         return self.hand_size
     
@@ -157,31 +174,13 @@ class Hand(pygame.sprite.RenderUpdates):
     def setStartSize(self, newSize):
         self.start_size = newSize
         return self.start_size
-
+    
     def addDeck(self, newDeck):
-        self.m_deck = newDeck
-        return self.m_deck
+        self.deck = newDeck
+        return self.deck
 
     def getDeck(self):
-        return self.m_deck
-    
-class Character(pygame.sprite.Sprite):
-    def __init__(self, name, loaded_image, health, energy, aDeck):
-        pygame.sprite.Sprite.__init__(self)
-        self.image, self.rect = loaded_image
-        self.name = name
-        self.health = health
-        self.energy = energy
-        self.deck = Deck(aDeck)
-    
-    def update(self,event):
-        match event.name:
-            case 'healthEvent':
-                self.health += event.amount
-            case 'energyEvent':
-                self.energy += event.amount
-            case _:
-                pass
+        return self.deck
 
 #effect_list = [{'name':[healthEvent,energyEvent], 'amount':int},{'name': , 'amount': }...]
 #           should always include an 'energyEvent'
