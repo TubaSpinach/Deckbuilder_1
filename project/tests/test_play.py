@@ -29,10 +29,13 @@ pygame.init()
 screen = pygame.display.set_mode((1280, 720))
 
 deck_list = []
+d2 = []
 for i in range(0,10):
     deck_list.append(play.CardFactory(card_dict['strike']))
+    d2.append(play.CardFactory(card_dict['bash']))
 
 tDeck = play.Deck(deck_list)
+td2 = play.Deck(d2)
 
 tPlayer = play.Character("Player",load_png("player.png"),10,3,tDeck)
 tEnemy = play.Character("Enemy",load_png("enemy.png"),10,3,tDeck)
@@ -40,6 +43,9 @@ tBView = play.BattleView(load_png("background.png"))
 tBView.add(tPlayer)
 tBView.add(tEnemy)
 tBView.arrange()
+
+tEvents = [pygame.event.Event(pygame.USEREVENT,{'name':'healthEvent','amount': -5 }),
+           pygame.event.Event(pygame.USEREVENT,{'name':'energyEvent','amount': -1 })]
 
 tCard = play.CardFactory(card_dict['strike'])
 
@@ -56,3 +62,18 @@ def test_deck():
     assert len(tDeck.discard_pile) == len(cards_pulled)
     tDeck.fromDiscardToDraw()
     assert len(tDeck.discard_pile) == 0
+
+def test_characters():
+    tPlayer.setHandSize(3)
+    tPlayer.setStartSize(4)
+    tPlayer.addDeck(d2)
+    assert tPlayer.hand_size == 3
+    assert tPlayer.start_size == 4
+    assert tPlayer.deck == d2
+    pygame.event.post(tEvents[0])
+    tPlayer.update(pygame.event.poll())
+    assert tPlayer.health == 5
+    pygame.event.post(tEvents[1])
+    tPlayer.update(pygame.event.poll())
+    assert tPlayer.energy == 2
+
