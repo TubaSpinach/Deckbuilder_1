@@ -71,6 +71,12 @@ class Deck(pygame.sprite.Group):
     def addToDrawPile(self, *sprites):
         self.draw_pile.add(sprites)
         return self.draw_pile
+    
+    def fromDiscardToDraw(self):
+        self.addToDrawPile(self.discard_pile.sprites())
+        self.discard_pile.empty()
+        self.shuffle()
+        return self.draw_pile
 
 #need to post a turnStart event in the loop
 #need to post a turnEnd event in the loop

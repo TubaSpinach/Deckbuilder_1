@@ -44,8 +44,15 @@ tBView.arrange()
 tCard = play.CardFactory(card_dict['strike'])
 
 def test_card_factory():
-    tCard = play.CardFactory(card_dict['strike'])
     assert isinstance(tCard,play.Card)
     assert tCard.title == card_dict['strike']['title']
     assert tCard.effects == card_dict['strike']['effects']
     assert tCard.image_src == card_dict['strike']['image_src']
+
+def test_deck():
+    cards_pulled = tDeck.pullCards(1)
+    assert isinstance(cards_pulled[0],play.Card)
+    tDeck.addToDiscardPile(cards_pulled)
+    assert len(tDeck.discard_pile) == len(cards_pulled)
+    tDeck.fromDiscardToDraw()
+    assert len(tDeck.discard_pile) == 0
