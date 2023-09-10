@@ -1,10 +1,7 @@
 #TODO
-#set up virtual environment
 #modules: map.py
 #add a win / loss screen or menu
-#test json uses in conf_dict and card_dict
-#add unit tests for play.py, menu.py
-#images: player.png, enemy.png, strike.png, bash.png
+#images:
 #right now, Enemy.image should be changed for each enemy. Keep?
 
 
@@ -85,18 +82,19 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        elif event.name == 'newGame':
-            currentView = VIEWS[1]
-        elif event.name == "loss":
-            currentView = VIEWS[0]
+        elif event.type == pygame.USEREVENT:
+            if event.dict['name'] == 'newGame':
+                currentView = VIEWS[1]
+            elif event['name'] == "loss":
+                currentView = VIEWS[0]
         #elif event.type == "win":
         #    currentView = VIEWS[2]
         else:
-            currentView.update()
+            currentView.update(event)
 
     # RENDER YOUR GAME HERE
-    currentView.clear()
-    currentView.draw()
+    currentView.clear(screen,currentView.image)
+    currentView.draw(screen)
     
     # flip() the display to put your work on screen
     pygame.display.flip()

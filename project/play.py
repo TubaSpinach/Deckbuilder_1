@@ -35,7 +35,7 @@ class BattleView(pygame.sprite.RenderUpdates):
         return True
 
     def handle(self, event):
-        match event.name:
+        match event.dict['name']:
             case "dropEvent":
                 if self.rect.colliderect(event.pos):
                     for effect in event.effects:
@@ -94,7 +94,7 @@ class Hand(pygame.sprite.RenderUpdates):
             pygame.sprite.RenderUpdates.add(sprites)
 
     def update(self, event):
-        match event.name:
+        match event.dict['name']:
             case 'turnStart':
                 self.mCharacter.deck.pullCards(self.start_size)
             case 'turnEnd':
@@ -158,13 +158,14 @@ class Character(pygame.sprite.Sprite):
         self.start_size = 5
     
     def update(self,event):
-        match event.name:
-            case 'healthEvent':
-                self.health += event.amount
-            case 'energyEvent':
-                self.energy += event.amount
-            case _:
-                pass
+        if event.type == pygame.USEREVENT:
+            match event.dict['name']:
+                case 'healthEvent':
+                    self.health += event.amount
+                case 'energyEvent':
+                    self.energy += event.amount
+                case _:
+                    pass
 
     def getHandSize(self):
         return self.hand_size

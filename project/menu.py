@@ -34,7 +34,7 @@ class Button(pygame.sprite.Sprite):
         #center it in the button; this doesn't work, and I need to figure out what to do with that
         #self.text.center = self.rect.center
         #the event placed on cue when pressed!
-        self.action = pygame.event.Event(pygame.USEREVENT, {'action': action})
+        self.action = pygame.event.Event(pygame.USEREVENT, {'name':'newGame','action': action})
     
     #activate on mouseclick!
     def update(self, event):
