@@ -54,6 +54,7 @@ running = True
 GameMenu = menu.Menu(load_png("background.png"))
 newGameButton = menu.Button('newGame','New Game',load_png("button.png"),load_png("button_down.png"))
 GameMenu.add(newGameButton)
+GameMenu.arrange()
 
 deck_list = []
 #will also be instantiated elsewhere later on
