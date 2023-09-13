@@ -1,4 +1,5 @@
 #TODO
+
 #modules: map.py
 #adjust menu.draw to draw to a reasonable size
 #determine if I will use a set resolution or if there's an option for resizability in pygame
@@ -83,31 +84,34 @@ def start_up():
     BattleScreen.add(Enemy)
     BattleScreen.arrange()
 
-    views = [GameMenu,BattleScreen]
+    views.append(GameMenu)
+    views.append(BattleScreen)
     
     return clock, screen, views[0]
 
 tick, display, currentView = start_up()
 
-def handle_events(event):
+def handle_events(event, cView, views):
     if event.type == pygame.QUIT:
-            return False
+            return False, cView
     elif event.type == pygame.USEREVENT:
         if event.dict['name'] == 'newGame':
-            currentView = views[1]
+            cView = views[1]
+            return True, cView
         elif event.dict['name'] == "loss":
-            currentView = views[0]
+            cView = views[0]
+            return True, cView
         #elif event.dict['name'] == "win":
         #    currentView = VIEWS[2]
-        else:
-            currentView.update(event)
-    return True
+    else:
+        return True, cView.update(event)
+    
 
 while running:
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
     for event in pygame.event.get():
-        running = handle_events(event)
+        running, currentView = handle_events(event,currentView, views)
 
     # RENDER YOUR GAME HERE
     currentView.clear(display,currentView.image)
