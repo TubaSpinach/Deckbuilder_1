@@ -19,6 +19,10 @@ settings = os.path.join('project','res','settings.txt')
 card_lib = os.path.join('project','res', 'card_lib.txt')
 conf_dict = {}
 card_dict = {}
+deck_list = []
+currentView = None
+running = True
+views = []
 
 def load_json(file):
     try: 
@@ -46,62 +50,72 @@ def load_png(name):
         raise SystemExit
     return image, image.get_rect()
 
-# pygame setup
-pygame.init()
-screen = pygame.display.set_mode((conf_dict['WIDTH'], conf_dict['HEIGTH']))
-clock = pygame.time.Clock()
-running = True
+#initialize the game
+def start_up():
 
-#has to come after display initialization
-GameMenu = menu.Menu(load_png("background.png"),screen)
-newGameButton = menu.Button('newGame','New Game',load_png("button.png"),load_png("button_down.png"))
-GameMenu.add(newGameButton)
-GameMenu.arrange()
+    # pygame setup
+    pygame.init()
+    screen = pygame.display.set_mode((conf_dict['WIDTH'], conf_dict['HEIGTH']))
+    clock = pygame.time.Clock()
+    
 
-deck_list = []
-#will also be instantiated elsewhere later on
-for i in range(0,6):
-    deck_list.append(play.CardFactory(card_dict['strike']))
-
-for i in range(0,4):
-    deck_list.append(play.CardFactory(card_dict['bash']))
+    #has to come after display initialization
+    GameMenu = menu.Menu(load_png("background.png"),screen)
+    newGameButton = menu.Button('newGame','New Game',load_png("button.png"),load_png("button_down.png"))
+    GameMenu.add(newGameButton)
+    GameMenu.arrange()
 
 
-#probably will be instantiated elsewhere later on
-Player = play.Character('Player',load_png("player.png"),50,3,deck_list)
-Enemy = play.Character('Enemy', load_png('enemy.png'),50,3,deck_list)
+    #will also be instantiated elsewhere later on
+    for i in range(0,6):
+        deck_list.append(play.CardFactory(card_dict['strike']))
 
-BattleScreen = play.BattleView(load_png("battle_background.png"))
-BattleScreen.add(Player)
-BattleScreen.add(Enemy)
-BattleScreen.arrange()
+    for i in range(0,4):
+        deck_list.append(play.CardFactory(card_dict['bash']))
 
-VIEWS = [GameMenu,BattleScreen]
-currentView = VIEWS[0]
+
+    #probably will be instantiated elsewhere later on
+    Player = play.Character('Player',load_png("player.png"),50,3,deck_list)
+    Enemy = play.Character('Enemy', load_png('enemy.png'),50,3,deck_list)
+
+    BattleScreen = play.BattleView(load_png("battle_background.png"))
+    BattleScreen.add(Player)
+    BattleScreen.add(Enemy)
+    BattleScreen.arrange()
+
+    views = [GameMenu,BattleScreen]
+    
+    return clock, screen, views[0]
+
+tick, display, currentView = start_up()
+
+def handle_events(event):
+    if event.type == pygame.QUIT:
+            return False
+    elif event.type == pygame.USEREVENT:
+        if event.dict['name'] == 'newGame':
+            currentView = views[1]
+        elif event['name'] == "loss":
+            currentView = views[0]
+        #elif event.type == "win":
+        #    currentView = VIEWS[2]
+        else:
+            currentView.update(event)
+    return True
 
 while running:
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        elif event.type == pygame.USEREVENT:
-            if event.dict['name'] == 'newGame':
-                currentView = VIEWS[1]
-            elif event['name'] == "loss":
-                currentView = VIEWS[0]
-        #elif event.type == "win":
-        #    currentView = VIEWS[2]
-        else:
-            currentView.update(event)
+        running = handle_events(event)
 
     # RENDER YOUR GAME HERE
-    currentView.clear(screen,currentView.image)
-    currentView.draw(screen)
+    currentView.clear(display,currentView.image)
+    currentView.draw(display)
     
     # flip() the display to put your work on screen
     pygame.display.flip()
 
-    clock.tick(60)  # limits FPS to 60
+    tick.tick(60)  # limits FPS to 60
 
 pygame.quit()
