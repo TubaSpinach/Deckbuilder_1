@@ -95,9 +95,9 @@ def handle_events(event):
     elif event.type == pygame.USEREVENT:
         if event.dict['name'] == 'newGame':
             currentView = views[1]
-        elif event['name'] == "loss":
+        elif event.dict['name'] == "loss":
             currentView = views[0]
-        #elif event.type == "win":
+        #elif event.dict['name'] == "win":
         #    currentView = VIEWS[2]
         else:
             currentView.update(event)

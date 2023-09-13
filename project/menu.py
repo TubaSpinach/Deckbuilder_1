@@ -17,14 +17,14 @@ class Menu(pygame.sprite.RenderUpdates):
     
     def draw(self,*args):
         #draw self first; children go on top
-        self.aSurface.blit(self.image,self.rect)
+        self.aSurface.blit(self.image,(0,0))
         return super(Menu, self).draw(self.aSurface)
         
     def arrange(self):
         if len(self) > 0:
             for i, sprite in enumerate(self.sprites()):
                 sprite.rect.centerx = self.rect.centerx
-                sprite.rect.y = self.rect.centery - (len(self) - 1)*50*i
+                sprite.rect.centery = self.rect.centery - (len(self) - 1)*50*i
     #don't need to define an update method, already in sprite.RenderUpdates
 
 class Button(pygame.sprite.Sprite):
