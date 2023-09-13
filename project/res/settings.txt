@@ -1,2 +1,2 @@
-{ "WIDTH" : 1280,
- "HEIGTH" : 720 }
+{ "WIDTH" : 1080,
+ "HEIGTH" : 2220 }

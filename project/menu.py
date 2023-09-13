@@ -8,16 +8,17 @@ import pygame
 
 #a class to hold buttons and take names 8)
 class Menu(pygame.sprite.RenderUpdates):
-    def __init__(self,loaded_image):
+    def __init__(self,loaded_image,aSurface):
         #make sure to call default class init first
         pygame.sprite.RenderUpdates.__init__(self)
         self.image, self.rect = loaded_image
+        self.aSurface = aSurface
+        self.rect = self.aSurface.get_rect()
     
-    
-    def draw(self, aSurface):
+    def draw(self,*args):
         #draw self first; children go on top
-        aSurface.blit(self.image,self.rect)
-        return super(Menu, self).draw(aSurface)
+        self.aSurface.blit(self.image,self.rect)
+        return super(Menu, self).draw(self.aSurface)
         
     def arrange(self):
         if len(self) > 0:

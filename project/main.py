@@ -1,5 +1,7 @@
 #TODO
 #modules: map.py
+#adjust menu.draw to draw to a reasonable size
+#determine if I will use a set resolution or if there's an option for resizability in pygame
 #add a win / loss screen or menu
 #images:
 #right now, Enemy.image should be changed for each enemy. Keep?
@@ -51,7 +53,7 @@ clock = pygame.time.Clock()
 running = True
 
 #has to come after display initialization
-GameMenu = menu.Menu(load_png("background.png"))
+GameMenu = menu.Menu(load_png("background.png"),screen)
 newGameButton = menu.Button('newGame','New Game',load_png("button.png"),load_png("button_down.png"))
 GameMenu.add(newGameButton)
 GameMenu.arrange()
